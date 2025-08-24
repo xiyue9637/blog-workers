@@ -197,17 +197,15 @@ export default {
             exp: Date.now() + 86400000 // 24小时
           });
           
-          const token = `${btoa(JSON.stringify({ alg: 'HS256' }))}.${btoa(payload)}`;
+          const token = btoa(JSON.stringify({ alg: 'HS256' })) + '.' + btoa(payload);
           const signature = sha256.hmac.create(env.SECRET_KEY).update(token).hex();
-          
           return new Response(JSON.stringify({ 
-            token: `${token}.${signature}`,
-            role: user.role,
-            avatar: user.avatar
-          }), { headers });
+  token: token + '.' + signature,
+  role: user.role,
+  avatar: user.avatar
+}), { headers });
         }
-        
-        // 发布帖子
+         // 发布帖子
         if (pathname === '/api/posts' && request.method === 'POST') {
           const token = request.headers.get('Authorization')?.split(' ')[1];
           if (!token || !verifyToken(token, env.SECRET_KEY)) {
@@ -827,13 +825,13 @@ const indexHTML = `<!DOCTYPE html>
       loadPosts();
       
       // 渐变动画
-      setInterval(() => {
-        const hue = Math.floor(Math.random() * 360);
-        document.documentElement.style.setProperty('--primary', `hsl(${hue}, 70%, 50%)`);
-        document.documentElement.style.setProperty('--secondary', `hsl(${(hue + 60) % 360}, 70%, 50%)`);
-      }, 5000);
+setInterval(() => {
+  const hue = Math.floor(Math.random() * 360);
+  // 使用字符串拼接代替模板字符串
+  document.documentElement.style.setProperty('--primary', 'hsl(' + hue + ', 70%, 50%)');
+  document.documentElement.style.setProperty('--secondary', 'hsl(' + ((hue + 60) % 360) + ', 70%, 50%)');
+}, 5000);
     }
-
     // 设置事件监听
     function setupEventListeners() {
       // 切换标签
