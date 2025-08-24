@@ -1,0 +1,11 @@
+name = "blog-workers"
+main = "worker.js"
+compatibility_date = "2025-08-24"
+
+# 不配置 KV 绑定（按题目要求部署后手动绑定）
+# 部署后需在 Cloudflare 控制台绑定：
+#   KV 命名空间名: BLOG_KV
+#   环境变量: SECRET_KEY (随机生成32字符以上字符串)
+
+[env.production]
+# 仅用于 GitHub Actions 部署配置
